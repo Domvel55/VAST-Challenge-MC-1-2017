@@ -1,6 +1,8 @@
 import pandas as pd
 import typing
 
+
+
 class DataManipulator():
 
     '''
@@ -27,52 +29,66 @@ class DataManipulator():
 
         main_dataframe = pd.read_csv(csv_path)
 
-    def get_timeframe(self, day : str) -> pd.DataFrame
+    def get_timeframe(self, day : str) -> pd.DataFrame:
 
-        return "filler"
+        day = pd.Timestamp(day)
 
-    def get_timeframe(self, to : str, from : str ) -> pd.DataFrame
+        return self.main_dataframe["Timestamp"].apply(lambda row : True if( pd.Timestamp(row).day == output.day ) else False)
 
-        return "filler"
+    def get_timeframe(self, time1 : str, time2 : str ) -> pd.DataFrame:
 
-    def get_timeframe(self, history : pd.DataFrame, day : str) -> pd.DataFrame
+        time1 = pd.Timestamp(time1)
+        time2 = pd.Timestamp(time2)
 
-        return "filler"
+        return self.main_dataframe["Timestamp"].apply(lambda row : True if( time2 <= pd.Timestamp(row) <= time1 ) else False)
 
-    def get_timeframe(self, history : pd.DataFrame, to : str, from : str ) -> pd.DataFrame
+    def get_timeframe(self, history : pd.DataFrame, day : str) -> pd.DataFrame:
 
-        return "filler"
+        day = pd.Timestamp(day)
+
+        return history["Timestamp"].apply(lambda row : True if( pd.Timestamp(row).day == output.day ) else False)
+
+    def get_timeframe(self, history : pd.DataFrame, time1 : str, time2 : str ) -> pd.DataFrame:
+
+        time1 = pd.Timestamp(time1)
+        time2 = pd.Timestamp(time2)
+
+        return history["Timestamp"].apply(lambda row : True if( time2 <= pd.Timestamp(row) <= time1 ) else False)
 
     def get_car_history(self, car_id : str) -> pd.DataFrame:
 
-        return "filler"
+        return self.main_dataframe[main_dataframe.car_id == car_id]
 
-    def get_car_history(self, history : pd.DataFrame, car_id : str, day: Timestamp) -> pd.DataFrame:
+    def get_car_history(self, history : pd.DataFrame, car_id : str) -> pd.DataFrame:
 
-        return "filler"
+        return history[main_dataframe.car_id == car_id]
 
     def get_cartype_history(self, car_type : str) -> pd.DataFrame:
 
-        return "filler"
+        return self.main_dataframe[main_dataframe.car_type == car_type]
 
-    def get_cartype_history(self, history : pd.DataFrame, car_type : str, day: Timestamp) -> pd.DataFrame:
+    def get_cartype_history(self, history : pd.DataFrame, car_type : str) -> pd.DataFrame:
 
-        return "filler"
+        return history[main_dataframe.car_type == car_type]
 
     def get_specific_gate_history(self, gate_name : str) -> pd.DataFrame:
 
-        return "filler"
+        return self.main_dataframe[main_dataframe.gate_name == gate_name]
 
     def get_specific_gate_history(self, history : pd.DataFrame, gate_name : str) -> pd.DataFrame:
 
-        return "filler"
+        return history[history.gate_name == gate_name]
 
     #probably going to need regexs to work properly
     #
+    def get_gatetype_history(self, gate_type : str) -> pd.DataFrame:
+
+        output_indexes = self.main_dataframe["gate_name"].apply(lambda row : True if( re.search( gate_type, row) ) else False)
+
+        return main_dataframe[output_indexes]
+
     def get_gatetype_history(self, history : pd.DataFrame, gate_type : str) -> pd.DataFrame:
 
-        return "filler"
+        output_indexes = history["gate_name"].apply(lambda row : True if( re.search( gate_type, row) ) else False)
 
-    def get_gatetype_history(self, history : pd.DataFrame, gate_type : str, day: Timestamp) -> pd.DataFrame:
-
-        return "filler"
+        return main_dataframe[output_indexes]
