@@ -12,14 +12,11 @@ class DataManipulator():
     for all our data Needs.
 
     using pandas the CSV can be queried much like a SQL table,thus circumventing the need to use SQLite.
-    https://towardsdatascience.com/how-to-rewrite-your-sql-queries-in-python-with-pandas-8d5b01ab8e31
 
-    don't be to intimated my the number of classes most of them are linerss, I'm just trying to cover all the bases.
-
-    in order to do function chaining properly you need to put a true as the last argument in your last function in the chain.''
-
-    also to make this work properly be sure to open a text editor and,
-    change any dashes to underscores in the column headers in order for the code to work properly.
+    IMPORTANT!: in order to get anything out of a function chain
+                you need to pass true as the last argument, in the last function
+                of your chain, or else you will just get the DataManipulator passed back to you.
+                this also applies for single function calls
 
     -Nico
     '''
