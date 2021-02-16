@@ -1,36 +1,8 @@
 import pandas as pd
 import typing
+import re
 
-def get_timeframe( history : pd.DataFrame, time1 : str, time2 : str ) -> pd.DataFrame:
 
-    time1 = pd.Timestamp(time1)
-    time2 = pd.Timestamp(time2)
-
-    return history[history["Timestamp"].apply(lambda row : True if( time1 <= pd.Timestamp(row) <= time2 ) else False)]
-
-def get_day( history : pd.DataFrame, day : str) -> pd.DataFrame:
-
-    day = pd.Timestamp(day)
-
-    return history[history["Timestamp"].apply(lambda row : True if( pd.Timestamp(row).day == output.day ) else False)]
-
-def get_car( history : pd.DataFrame, car_id : str) -> pd.DataFrame:
-
-    return history[history.car_id == car_id]
-
-def get_cartype( history : pd.DataFrame, car_type : str) -> pd.DataFrame:
-
-    return history[history.car_type == car_type]
-
-def get_gatetype( history : pd.DataFrame, gate_type : str) -> pd.DataFrame:
-
-    output_indexes = history["gate_name"].apply(lambda row : True if( re.search( gate_type, row) ) else False)
-
-    return history[output_indexes]
-
-def get_specific_gate( history : pd.DataFrame, gate_name : str) -> pd.DataFrame:
-
-    return history[history.gate_name == gate_name]
 
 class DataManipulator():
 
@@ -44,7 +16,7 @@ class DataManipulator():
 
     don't be to intimated my the number of classes most of them are linerss, I'm just trying to cover all the bases.
 
-    more functions can be added to this class depending on the groups data needs
+    in order to do function chaining properly you need to put a true as the last argument in your last function in the chain.''
 
     also to make this work properly be sure to open a text editor and,
     change any dashes to underscores in the column headers in order for the code to work properly.
@@ -58,30 +30,49 @@ class DataManipulator():
     def __init__(self, csv_path : str):
 
         self.main_dataframe = pd.read_csv(csv_path)
-
+        self.output = None
     def get_day(self, day : str, give_back=False) -> pd.DataFrame:
 
         day = pd.Timestamp(day)
 
-        self.output = self.main_dataframe[self.main_dataframe["Timestamp"].apply(lambda row : True if( pd.Timestamp(row).day == output.day ) else False)]
+        if(self.output is None):
+            self.output = self.main_dataframe[self.main_dataframe["Timestamp"].apply(lambda row : True if( pd.Timestamp(row).day == output.day ) else False)]
+
+        else:
+            self.output = self.output[self.output["Timestamp"].apply(lambda row : True if( pd.Timestamp(row).day == output.day ) else False)]
 
         if(give_back):
             return self.output
 
+        else:
+            return self
 
     def get_timeframe(self, time1 : str, time2 : str, give_back=False ) -> pd.DataFrame:
 
         time1 = pd.Timestamp(time1)
         time2 = pd.Timestamp(time2)
 
-        self.output =  self.main_dataframe[self.main_dataframe["Timestamp"].apply(lambda row : True if( time1 <= pd.Timestamp(row) <= time2 ) else False)]
+        if(self.output is None):
+            output_indexes = self.main_dataframe["Timestamp"].apply(lambda row : True if( time1 <= pd.Timestamp(row) <= time2 ) else False)
+            self.output = self.main_dataframe[output_indexes]
+
+        else:
+            output_indexes = self.output["Timestamp"].apply(lambda row : True if( time1 <= pd.Timestamp(row) <= time2 ) else False)
+            self.output = self.output[output_indexes]
 
         if(give_back):
             return self.output
 
+        else:
+            return self
+
     def get_car(self, car_id : str, give_back=False) -> pd.DataFrame:
 
-        self.output =  self.main_dataframe[self.main_dataframe.car_id == car_id]
+        if(self.output is None):
+            self.output = self.main_dataframe[self.main_dataframe.car_id == car_id]
+
+        else:
+            self.output = self.output[self.output.car_id == car_id]
 
         if(give_back):
             return self.output
@@ -91,7 +82,11 @@ class DataManipulator():
 
     def get_cartype(self, car_type : str, give_back=False) -> pd.DataFrame:
 
-        self.output =  self.main_dataframe[self.main_dataframe.car_type == car_type]
+        if(self.output is None):
+            self.output = self.main_dataframe[self.main_dataframe.car_type == str(car_type)]
+
+        else:
+            self.output = self.output[self.output.car_type == str(car_type)]
 
         if(give_back):
             return self.output
@@ -101,7 +96,11 @@ class DataManipulator():
 
     def get_specific_gate(self, gate_name : str, give_back=False) -> pd.DataFrame:
 
-        self.output =  self.main_dataframe[self.main_dataframe.gate_name == gate_name]
+        if(self.output is None):
+            self.output =  self.main_dataframe[self.main_dataframe.gate_name == gate_name]
+
+        else:
+            self.output = self.main_dataframe[self.main_dataframe.gate_name == gate_name]
 
         if(give_back):
             return self.output
@@ -111,11 +110,16 @@ class DataManipulator():
 
     def get_gatetype(self, gate_type : str, give_back=False) -> pd.DataFrame:
 
-        output_indexes = self.main_dataframe["gate_name"].apply(lambda row : True if( re.search( gate_type, row) ) else False)
+        if(self.output is None):
+            output_indexes = self.main_dataframe["gate_name"].apply(lambda row : True if( re.search( gate_type, row) ) else False)
+            self.output =  self.main_dataframe[output_indexes]
 
-        self.output = main_dataframe[output_indexes]
+        else:
+            output_indexes = self.output["gate_name"].apply(lambda row : True if( re.search( gate_type, row) ) else False)
+            self.output =  self.output[output_indexes]
 
         if(give_back):
             return self.output
+
         else:
             return self
