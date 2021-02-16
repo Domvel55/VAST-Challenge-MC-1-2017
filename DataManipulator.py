@@ -1,7 +1,36 @@
 import pandas as pd
 import typing
 
+def get_timeframe( history : pd.DataFrame, time1 : str, time2 : str ) -> pd.DataFrame:
 
+    time1 = pd.Timestamp(time1)
+    time2 = pd.Timestamp(time2)
+
+    return history[history["Timestamp"].apply(lambda row : True if( time1 <= pd.Timestamp(row) <= time2 ) else False)]
+
+def get_day( history : pd.DataFrame, day : str) -> pd.DataFrame:
+
+    day = pd.Timestamp(day)
+
+    return history[history["Timestamp"].apply(lambda row : True if( pd.Timestamp(row).day == output.day ) else False)]
+
+def get_car( history : pd.DataFrame, car_id : str) -> pd.DataFrame:
+
+    return history[history.car_id == car_id]
+
+def get_cartype( history : pd.DataFrame, car_type : str) -> pd.DataFrame:
+
+    return history[history.car_type == car_type]
+
+def get_gatetype( history : pd.DataFrame, gate_type : str) -> pd.DataFrame:
+
+    output_indexes = history["gate_name"].apply(lambda row : True if( re.search( gate_type, row) ) else False)
+
+    return history[output_indexes]
+
+def get_specific_gate( history : pd.DataFrame, gate_name : str) -> pd.DataFrame:
+
+    return history[history.gate_name == gate_name]
 
 class DataManipulator():
 
@@ -24,71 +53,69 @@ class DataManipulator():
     '''
 
     main_dataframe = None
+    output = None
 
     def __init__(self, csv_path : str):
 
-        main_dataframe = pd.read_csv(csv_path)
+        self.main_dataframe = pd.read_csv(csv_path)
 
-    def get_timeframe(self, day : str) -> pd.DataFrame:
+    def get_day(self, day : str, give_back=False) -> pd.DataFrame:
 
         day = pd.Timestamp(day)
 
-        return self.main_dataframe["Timestamp"].apply(lambda row : True if( pd.Timestamp(row).day == output.day ) else False)
+        self.output = self.main_dataframe[self.main_dataframe["Timestamp"].apply(lambda row : True if( pd.Timestamp(row).day == output.day ) else False)]
 
-    def get_timeframe(self, time1 : str, time2 : str ) -> pd.DataFrame:
+        if(give_back):
+            return self.output
+
+
+    def get_timeframe(self, time1 : str, time2 : str, give_back=False ) -> pd.DataFrame:
 
         time1 = pd.Timestamp(time1)
         time2 = pd.Timestamp(time2)
 
-        return self.main_dataframe["Timestamp"].apply(lambda row : True if( time2 <= pd.Timestamp(row) <= time1 ) else False)
+        self.output =  self.main_dataframe[self.main_dataframe["Timestamp"].apply(lambda row : True if( time1 <= pd.Timestamp(row) <= time2 ) else False)]
 
-    def get_timeframe(self, history : pd.DataFrame, day : str) -> pd.DataFrame:
+        if(give_back):
+            return self.output
 
-        day = pd.Timestamp(day)
+    def get_car(self, car_id : str, give_back=False) -> pd.DataFrame:
 
-        return history["Timestamp"].apply(lambda row : True if( pd.Timestamp(row).day == output.day ) else False)
+        self.output =  self.main_dataframe[self.main_dataframe.car_id == car_id]
 
-    def get_timeframe(self, history : pd.DataFrame, time1 : str, time2 : str ) -> pd.DataFrame:
+        if(give_back):
+            return self.output
 
-        time1 = pd.Timestamp(time1)
-        time2 = pd.Timestamp(time2)
+        else:
+            return self
 
-        return history["Timestamp"].apply(lambda row : True if( time2 <= pd.Timestamp(row) <= time1 ) else False)
+    def get_cartype(self, car_type : str, give_back=False) -> pd.DataFrame:
 
-    def get_car_history(self, car_id : str) -> pd.DataFrame:
+        self.output =  self.main_dataframe[self.main_dataframe.car_type == car_type]
 
-        return self.main_dataframe[main_dataframe.car_id == car_id]
+        if(give_back):
+            return self.output
 
-    def get_car_history(self, history : pd.DataFrame, car_id : str) -> pd.DataFrame:
+        else:
+            return self
 
-        return history[main_dataframe.car_id == car_id]
+    def get_specific_gate(self, gate_name : str, give_back=False) -> pd.DataFrame:
 
-    def get_cartype_history(self, car_type : str) -> pd.DataFrame:
+        self.output =  self.main_dataframe[self.main_dataframe.gate_name == gate_name]
 
-        return self.main_dataframe[main_dataframe.car_type == car_type]
+        if(give_back):
+            return self.output
 
-    def get_cartype_history(self, history : pd.DataFrame, car_type : str) -> pd.DataFrame:
+        else:
+            return self
 
-        return history[main_dataframe.car_type == car_type]
-
-    def get_specific_gate_history(self, gate_name : str) -> pd.DataFrame:
-
-        return self.main_dataframe[main_dataframe.gate_name == gate_name]
-
-    def get_specific_gate_history(self, history : pd.DataFrame, gate_name : str) -> pd.DataFrame:
-
-        return history[history.gate_name == gate_name]
-
-    #probably going to need regexs to work properly
-    #
-    def get_gatetype_history(self, gate_type : str) -> pd.DataFrame:
+    def get_gatetype(self, gate_type : str, give_back=False) -> pd.DataFrame:
 
         output_indexes = self.main_dataframe["gate_name"].apply(lambda row : True if( re.search( gate_type, row) ) else False)
 
-        return main_dataframe[output_indexes]
+        self.output = main_dataframe[output_indexes]
 
-    def get_gatetype_history(self, history : pd.DataFrame, gate_type : str) -> pd.DataFrame:
-
-        output_indexes = history["gate_name"].apply(lambda row : True if( re.search( gate_type, row) ) else False)
-
-        return main_dataframe[output_indexes]
+        if(give_back):
+            return self.output
+        else:
+            return self
