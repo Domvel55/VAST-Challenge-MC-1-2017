@@ -28,7 +28,14 @@ class DataManipulator():
 
         self.main_dataframe = pd.read_csv(csv_path)
         self.output = None
+
     def get_day(self, day : str, give_back=False) -> pd.DataFrame:
+
+        '''
+            takes in a string of fromat year-month-day,
+            and turns data from that day
+
+        '''
 
         day = pd.Timestamp(day)
 
@@ -45,6 +52,12 @@ class DataManipulator():
             return self
 
     def get_timeframe(self, time1 : str, time2 : str, give_back=False ) -> pd.DataFrame:
+
+        '''
+            to get any timeframe, between time1, and time2
+            where they are 2 strings in the format of year-month-day hour:minute:second
+
+        '''
 
         time1 = pd.Timestamp(time1)
         time2 = pd.Timestamp(time2)
@@ -93,6 +106,12 @@ class DataManipulator():
 
     def get_specific_gate(self, gate_name : str, give_back=False) -> pd.DataFrame:
 
+        '''
+
+        unlike get_gatetype you can use this to get a specific gate like camping0
+
+        '''
+
         if(self.output is None):
             self.output =  self.main_dataframe[self.main_dataframe.gate_name == gate_name]
 
@@ -106,6 +125,10 @@ class DataManipulator():
             return self
 
     def get_gatetype(self, gate_type : str, give_back=False) -> pd.DataFrame:
+
+        '''
+        unlike get_specific_gate you can use this to get data for a set of gates, like all ranger stops.
+        '''
 
         if(self.output is None):
             output_indexes = self.main_dataframe["gate_name"].apply(lambda row : True if( re.search( gate_type, row) ) else False)
