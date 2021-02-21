@@ -10,7 +10,7 @@ then place
 
 from DataManipulator import DataManipulator 
 
-at the top of your main python file, to import the DataManipulator class from DataManipulator.py
+at the top of your main python file, to import the DataManipulator class from DataManipulator.py.
 
 Declare the manipulator, adding the file location to point to where your sensor data file is stored  
 finder = DataManipulator('C:/Users/legot/Desktop/College/DataVis/SensorData.csv') #file location  
@@ -24,5 +24,6 @@ Notice the second argument of True, marking the end of the chain
 
 Now for outputting to a csv:  
 frame.to_csv('C:/Users/legot/Desktop/College/DataVis/foundCar.csv') #File location and name of output file
-.to_csv will output the value of the dataframe to a file, which can then be used for analysis
+.to_csv will output the value of the dataframe to a file, which can then be used for analysis  
+dataframe.to_csv('file location')#Usage
 
