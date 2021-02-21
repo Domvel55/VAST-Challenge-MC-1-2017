@@ -1,7 +1,15 @@
 # VAST-Challenge-MC-1-2017
 
 
-WIP DataManipulator usage section, so no imports are required/tutorial for how the system works
+WIP DataManipulator usage section,
+
+to import the class make sure you have the file DataManipulator.py in the same folder as whatever python file you are doing your work in is.
+
+then place 
+
+from DataManipulator import DataManipulator 
+
+at the top of your main python file, to just import the DataManipulator from DataManipulator.py
 
 Declare the manipulator, adding the file location to point to where your sensor data file is stored
 finder = DataManipulator('C:/Users/legot/Desktop/College/DataVis/SensorData.csv') #file location
