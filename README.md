@@ -12,14 +12,14 @@ from DataManipulator import DataManipulator
 
 at the top of your main python file, to import the DataManipulator class from DataManipulator.py
 
-Declare the manipulator, adding the file location to point to where your sensor data file is stored
-finder = DataManipulator('C:/Users/legot/Desktop/College/DataVis/SensorData.csv') #file location
+Declare the manipulator, adding the file location to point to where your sensor data file is stored  
+finder = DataManipulator('C:/Users/legot/Desktop/College/DataVis/SensorData.csv') #file location  
 DataManipulator('file location') #Usage
 
 Run any of the functions above, as needed  
 frame = finder.get_car("20154519024544-322",True)  
 
-Function returns a dataframe, which I have called frame. This example searches the database for the car_id "20154519024544-322"
+Function returns a dataframe, which I have called frame. This example searches the database for the car_id "20154519024544-322".
 Notice the second argument of True, marking the end of the chain
 
 Now for outputting to a csv:  
