@@ -3,7 +3,7 @@
 
 WIP DataManipulator usage section:
 
-To import the class, make sure you have the file DataManipulator.py is in the same folder as the  
+To import the class, make sure you have the file DataManipulator.py in the same folder as the  
 python file you are doing your work in.
 
 then place 
