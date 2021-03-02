@@ -160,12 +160,12 @@ class DataManipulator():
 
         # Needed this as a temp value for prev_day when counting days
         # Create a datetime object of the previous day
-        prev_day = datetime.strptime(self.main_dataframe['Timestamp'][1], '%m/%d/%Y %H:%M')
+        prev_day = pd.Timestamp(self.main_dataframe['Timestamp'][1])
 
         # Iterates through entire dataframe and gathers each day
         for i in self.main_dataframe.index:
             # Creates a datetime object of the current day
-            current_day = datetime.strptime(self.main_dataframe['Timestamp'][i], '%m/%d/%Y %H:%M')
+            current_day = pd.Timestamp(self.main_dataframe['Timestamp'][i])
             # If datatime.day() is not equal add one to the current day
             if not prev_day.date() == current_day.date():
                 days += 1
@@ -208,7 +208,7 @@ class DataManipulator():
         for i in self.main_dataframe.index:
             # Creates the current gate and current day
             current_type = self.main_dataframe[type][i]
-            current_day = datetime.strptime(self.main_dataframe['Timestamp'][i], '%m/%d/%Y %H:%M').weekday()
+            current_day = pd.Timestamp(self.main_dataframe['Timestamp'][i]).weekday()
             # Combines the two for easier readability for dictionary purposes
             curr_tag = current_type + ' ' + str(current_day)
             if curr_tag in counts:
@@ -227,6 +227,7 @@ class DataManipulator():
         counts = self.average_by_weekday_helper('gate_name')
 
         # Returns a dictionary of each gate and its average usage per day
+
         self.output = counts
 
         return self
