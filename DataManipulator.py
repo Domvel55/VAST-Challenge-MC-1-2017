@@ -222,21 +222,51 @@ class DataManipulator():
 
         return counts
 
-    def average_gate_usage_by_weekday(self) -> pd.DataFrame:
+    def average_gate_usage_by_weekday(self):
 
         counts = self.average_by_weekday_helper('gate_name')
 
         # Returns a dictionary of each gate and its average usage per day
 
-        self.output = counts
+        headers = []
+        index = ['0','1','2','3','4','5','6']
 
-        return self
+        for item in counts:
 
-    def average_car_type_by_weekday(self) -> pd.DataFrame:
+            if item[:len(item) - 2] not in headers:
+                headers.append(item[:len(item) - 2])
+
+        headers = sorted(headers)
+
+        out_frame = pd.DataFrame(index=index,columns=headers)
+
+
+        for item in counts:
+
+            out_frame.loc[item[len(item) - 1]][item[:len(item) - 2 ]] = counts[item]
+
+        return out_frame
+
+    def average_car_type_by_weekday(self):
 
         counts = self.average_by_weekday_helper('car_type')
 
-        # Returns a dictionary of each gate and its average usage per day
-        self.output = counts
 
-        return self
+        headers = []
+        index = ['0','1','2','3','4','5','6']
+
+        for item in counts:
+
+            if item[:len(item) - 2] not in headers:
+                headers.append(item[:len(item) - 2])
+
+        headers = sorted(headers)
+
+        out_frame = pd.DataFrame(index=index,columns=headers)
+
+
+        for item in counts:
+
+            out_frame.loc[item[len(item) - 1]][item[:len(item) - 2 ]] = counts[item]
+
+        return out_frame
