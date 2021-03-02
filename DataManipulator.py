@@ -199,7 +199,7 @@ class DataManipulator():
 
         return self
 
-    def average_gate_usage_by_weekday(self) -> pd.DataFrame:
+    def average_by_weekday_helper(self, type : str) -> pd.DataFrame:
 
         counts = {}
         days = self.get_days()
@@ -207,18 +207,24 @@ class DataManipulator():
         # Iterate through the entire dataframe for gate_name and timestamp
         for i in self.main_dataframe.index:
             # Creates the current gate and current day
-            current_gate = self.main_dataframe['gate_name'][i]
+            current_type = self.main_dataframe[type][i]
             current_day = datetime.strptime(self.main_dataframe['Timestamp'][i], '%m/%d/%Y %H:%M').weekday()
             # Combines the two for easier readability for dictionary purposes
-            gate_day = current_gate + ' ' + str(current_day)
-            if gate_day in counts:
-                counts[gate_day] = counts.get(gate_day)+1
+            curr_tag = current_type + ' ' + str(current_day)
+            if curr_tag in counts:
+                counts[curr_tag] = counts.get(curr_tag) + 1
             else:
-                counts[gate_day] = 1
+                counts[curr_tag] = 1
 
         # Figures the average for each gate usage in each day of the week
         for entry in counts:
-            counts[entry] = int(counts.get(entry)/(days/7))
+            counts[entry] = int(counts.get(entry) / (days / 7))
+
+        return counts
+
+    def average_gate_usage_by_weekday(self) -> pd.DataFrame:
+
+        counts = self.average_by_weekday_helper('gate_name')
 
         # Returns a dictionary of each gate and its average usage per day
         self.output = counts
@@ -227,24 +233,7 @@ class DataManipulator():
 
     def average_car_type_by_weekday(self) -> pd.DataFrame:
 
-        counts = {}
-        days = self.get_days()
-
-        # Iterate through the entire dataframe for car_type and timestamp
-        for i in self.main_dataframe.index:
-            # Creates the current car_type and current day
-            current_car_type = self.main_dataframe['car_type'][i]
-            current_day = datetime.strptime(self.main_dataframe['Timestamp'][i], '%m/%d/%Y %H:%M').weekday()
-            # Combines the two for easier readability for dictionary purposes
-            car_day = current_car_type + ' ' + str(current_day)
-            if car_day in counts:
-                counts[car_day] = counts.get(car_day)+1
-            else:
-                counts[car_day] = 1
-
-        # Figures the average for each car type in each day of the week
-        for entry in counts:
-            counts[entry] = int(counts.get(entry)/(days/7))
+        counts = self.average_by_weekday_helper('car_type')
 
         # Returns a dictionary of each gate and its average usage per day
         self.output = counts
