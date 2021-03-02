@@ -153,14 +153,32 @@ class DataManipulator():
         else:
             return self
 
+    # Return total amount of days in the dataframe
+    def get_days(self) -> pd.DataFrame:
+
+        days = 1
+
+        # Needed this as a temp value for prev_day when counting days
+        # Create a datetime object of the previous day
+        prev_day = datetime.strptime(self.main_dataframe['Timestamp'][1], '%m/%d/%Y %H:%M')
+
+        # Iterates through entire dataframe and gathers each day
+        for i in self.main_dataframe.index:
+            # Creates a datetime object of the current day
+            current_day = datetime.strptime(self.main_dataframe['Timestamp'][i], '%m/%d/%Y %H:%M')
+            # If datatime.day() is not equal add one to the current day
+            if not prev_day.date() == current_day.date():
+                days += 1
+            # Sets prev_day to current_day to iterate along the list
+            prev_day = current_day
+
+        return days
+
     def daily_average_gate_usage(self) -> pd.DataFrame:
 
         # Use this as my general use dictionary to at first store total gate usage, then daily gate average
         counts = {}
-        days = 1
-
-        # Needed this as a temp value for prev_day when counting days
-        prev_day = datetime.strptime(self.main_dataframe['Timestamp'][1], '%m/%d/%Y %H:%M')
+        days = self.get_days()
 
         # This loop gathers the total usage for each gate from the entire dataset and total days
         for i in self.main_dataframe.index:
@@ -171,15 +189,62 @@ class DataManipulator():
             else:
                 counts[current_gate] = 1
 
-            current_day = datetime.strptime(self.main_dataframe['Timestamp'][i], '%m/%d/%Y %H:%M')
-            if not prev_day.date() == current_day.date():
-                days += 1
-            prev_day = current_day
-
         # Take the average of each gate
         for gate in counts:
             # Rounding down for simplicity
             counts[gate] = int(counts.get(gate)/days)
+
+        # Returns a dictionary of each gate and its average usage per day
+        self.output = counts
+
+        return self
+
+    def average_gate_usage_by_weekday(self) -> pd.DataFrame:
+
+        counts = {}
+        days = self.get_days()
+
+        # Iterate through the entire dataframe for gate_name and timestamp
+        for i in self.main_dataframe.index:
+            # Creates the current gate and current day
+            current_gate = self.main_dataframe['gate_name'][i]
+            current_day = datetime.strptime(self.main_dataframe['Timestamp'][i], '%m/%d/%Y %H:%M').weekday()
+            # Combines the two for easier readability for dictionary purposes
+            gate_day = current_gate + ' ' + str(current_day)
+            if gate_day in counts:
+                counts[gate_day] = counts.get(gate_day)+1
+            else:
+                counts[gate_day] = 1
+
+        # Figures the average for each gate usage in each day of the week
+        for entry in counts:
+            counts[entry] = int(counts.get(entry)/(days/7))
+
+        # Returns a dictionary of each gate and its average usage per day
+        self.output = counts
+
+        return self
+
+    def average_car_type_by_weekday(self) -> pd.DataFrame:
+
+        counts = {}
+        days = self.get_days()
+
+        # Iterate through the entire dataframe for car_type and timestamp
+        for i in self.main_dataframe.index:
+            # Creates the current car_type and current day
+            current_car_type = self.main_dataframe['car_type'][i]
+            current_day = datetime.strptime(self.main_dataframe['Timestamp'][i], '%m/%d/%Y %H:%M').weekday()
+            # Combines the two for easier readability for dictionary purposes
+            car_day = current_car_type + ' ' + str(current_day)
+            if car_day in counts:
+                counts[car_day] = counts.get(car_day)+1
+            else:
+                counts[car_day] = 1
+
+        # Figures the average for each car type in each day of the week
+        for entry in counts:
+            counts[entry] = int(counts.get(entry)/(days/7))
 
         # Returns a dictionary of each gate and its average usage per day
         self.output = counts
