@@ -15,7 +15,7 @@
 				width: 650px;
 				margin: 1px;
 			}*/
-			
+
 		</style>
 	</head>
 	<body>
@@ -73,8 +73,63 @@
 			   .enter().append("path")
 			   .attr("d", d3.geoPath())
 			   .attr("fill", function(d) { return color(d.value); })
+
+
 			})
-			
+
+			/*
+			d3.csv("https://raw.githubusercontent.com/Domvel55/VAST-Challenge-MC-1-2017/main/uniqe_gate_sites.csv", function(data) {
+
+				var x = d3.scaleLinear()
+						  .domain([5, 200])
+						  .range([ margin.left, width - margin.right ]);
+				svg.append("g")
+				   .attr("transform", "translate(0," + height + ")")
+				   .call(d3.axisBottom(x));
+
+				var y = d3.scaleLinear()
+						  .domain([5, 200])
+						  .range([ height - margin.bottom, margin.top ]);
+				svg.append("g")
+				   .call(d3.axisLeft(y));
+
+				var tooltip = d3.select("#my_dataviz")
+					.append("div")
+						.style("position", "absolute")
+						.style("visibility", "hidden")
+						.text("I'm a circle!");
+
+				
+			  var mouseover = function(d) {
+					tooltip
+			      .html("TEEEST" + d.group)
+			      .style("left", (d3.mouse(this)[0]+90) + "px") // It is important to put the +90: other wise the tooltip is exactly where the point is an it creates a weird effect
+			      .style("top", (d3.mouse(this)[1]) + "px")
+			  }
+
+			  var mouseleave = function(d) {
+			    tooltip
+			      .transition()
+			      .duration(200)
+			      .style("opacity", 0)
+			  }
+
+				svg.append('g')
+					.selectAll("dot")
+					.data(data)
+					.enter()
+					.append("circle")
+						.attr("cx", function (d) { return x(d.x); } )
+						.attr("cy", function (d) { return y(d.y); } )
+						.attr("r", 5)
+						.style("fill", "#0000FF")
+						.on("mouseover", mouseover)
+						.on("mousemove", mousemove)
+						.on("mouseleave", mouseleave)
+
+				})
+				*/
+
 		</script>
 </body>
 </html>
