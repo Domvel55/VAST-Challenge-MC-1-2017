@@ -77,9 +77,11 @@
 
 			})
 
-			/*
+
+
 			d3.csv("https://raw.githubusercontent.com/Domvel55/VAST-Challenge-MC-1-2017/main/uniqe_gate_sites.csv", function(data) {
 
+				// Add X axis
 				var x = d3.scaleLinear()
 						  .domain([5, 200])
 						  .range([ margin.left, width - margin.right ]);
@@ -87,48 +89,61 @@
 				   .attr("transform", "translate(0," + height + ")")
 				   .call(d3.axisBottom(x));
 
+				// Add Y axis
 				var y = d3.scaleLinear()
 						  .domain([5, 200])
 						  .range([ height - margin.bottom, margin.top ]);
 				svg.append("g")
 				   .call(d3.axisLeft(y));
 
-				var tooltip = d3.select("#my_dataviz")
-					.append("div")
-						.style("position", "absolute")
-						.style("visibility", "hidden")
-						.text("I'm a circle!");
+			  var tooltip = d3.select("#graph")
+			    .append("div")
+			    .style("opacity", 0)
+			    .attr("class", "tooltip")
+			    .style("background-color", "black")
+			    .style("color", "white")
+			    .style("border-radius", "5px")
+			    .style("padding", "10px")
+			    .style("position", "absolute");
 
-				
-			  var mouseover = function(d) {
-					tooltip
-			      .html("TEEEST" + d.group)
-			      .style("left", (d3.mouse(this)[0]+90) + "px") // It is important to put the +90: other wise the tooltip is exactly where the point is an it creates a weird effect
-			      .style("top", (d3.mouse(this)[1]) + "px")
-			  }
+			    var mouseover = function(d) {
+			      tooltip
+			        .style("opacity", 1)
+			        .style("left", (d3.mouse(this)[0]-20) + "px")
+			        .style("top", (d3.mouse(this)[1]) + "px")
+			      d3.select(this)
+			        .style("stroke", "black")
+			        .style("opacity", 1)
+			    }
+			    var mousemove = function(d) {
+			      tooltip
+			        .html("gate : " + d.group)
 
-			  var mouseleave = function(d) {
-			    tooltip
-			      .transition()
-			      .duration(200)
-			      .style("opacity", 0)
-			  }
+			    }
+			    var mouseleave = function(d) {
+			      tooltip
+			        .style("opacity", 0)
+			      d3.select(this)
+			        .style("stroke", "none")
+			        .style("opacity", 0.8)
+			    }
 
-				svg.append('g')
-					.selectAll("dot")
-					.data(data)
-					.enter()
-					.append("circle")
-						.attr("cx", function (d) { return x(d.x); } )
-						.attr("cy", function (d) { return y(d.y); } )
-						.attr("r", 5)
-						.style("fill", "#0000FF")
-						.on("mouseover", mouseover)
-						.on("mousemove", mousemove)
-						.on("mouseleave", mouseleave)
+			  svg.append('g')
+			    .selectAll("dot")
+			    .data(data)
+			    .enter()
+			    .append("circle")
+			      .attr("cx", function (d) { return x(d.x); } )
+			      .attr("cy", function (d) { return y(d.y); } )
+			      .attr("r", 5)
+			    .style("fill", "#0000FF")
+			    .on("mouseover", mouseover )
+			    .on("mousemove", mousemove )
+			    .on("mouseleave", mouseleave )
 
-				})
-				*/
+			  })
+
+
 
 		</script>
 </body>
