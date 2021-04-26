@@ -115,6 +115,8 @@
 			    var mouseleave = function(d) {
 			      tooltip
 			        .style("opacity", 0)
+							.style("left", ("0px")
+							.style("top", ("0px")
 			      d3.select(this)
 			        .style("stroke", "none")
 			        .style("opacity", 0.8)
@@ -128,7 +130,7 @@
 			      .attr("cx", function (d) { return x(d.x); } )
 			      .attr("cy", function (d) { return y(d.y); } )
 			      .attr("r", 5)
-			    .style("fill", "#0000FF")
+			    .style("fill", "#FF0000")
 			    .on("mouseover", mouseover )
 			    .on("mousemove", mousemove )
 			    .on("mouseleave", mouseleave )
