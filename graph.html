@@ -23,7 +23,7 @@
 		<script type="text/javascript">
 
 			// set the dimensions and margins of the graph
-			var margin = {top: 10, right: 30, bottom: 30, left: 40},
+			var margin = {top: 0, right: 10, bottom: 20, left: 10},
 			width = 1000 - margin.left - margin.right,
 			height = 1000 - margin.top - margin.bottom;
 
@@ -42,16 +42,12 @@
 			var x = d3.scaleLinear()
 					  .domain([5, 200])
 					  .range([ margin.left, width - margin.right ]);
-			svg.append("g")
-			   .attr("transform", "translate(0," + height + ")")
-			   .call(d3.axisBottom(x));
+
 
 			// Add Y axis
 			var y = d3.scaleLinear()
 					  .domain([5, 200])
 					  .range([ height - margin.bottom, margin.top ]);
-			svg.append("g")
-			   .call(d3.axisLeft(y));
 
 			// Prepare a color palette
 			var color = d3.scaleLinear()
@@ -85,16 +81,12 @@
 				var x = d3.scaleLinear()
 						  .domain([5, 200])
 						  .range([ margin.left, width - margin.right ]);
-				svg.append("g")
-				   .attr("transform", "translate(0," + height + ")")
-				   .call(d3.axisBottom(x));
+
 
 				// Add Y axis
 				var y = d3.scaleLinear()
 						  .domain([5, 200])
 						  .range([ height - margin.bottom, margin.top ]);
-				svg.append("g")
-				   .call(d3.axisLeft(y));
 
 			  var tooltip = d3.select("#graph")
 			    .append("div")
@@ -117,7 +109,7 @@
 			    }
 			    var mousemove = function(d) {
 			      tooltip
-			        .html("gate : " + d.group)
+			        .html(d.group + " : Number of cars : " + d.cars)
 
 			    }
 			    var mouseleave = function(d) {
