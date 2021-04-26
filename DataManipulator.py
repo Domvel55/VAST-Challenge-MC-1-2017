@@ -30,6 +30,7 @@ class DataManipulator():
 
     main_dataframe = None
     output = None
+    gate_coords = pd.read_csv('gate_location_data.csv')
 
     def __init__(self, csv_path: str):
 
@@ -312,3 +313,42 @@ class DataManipulator():
 
         # Returns a list of all cars and their car_types that never left
         return cars
+    
+    def find_coords(self, gate_name: str):
+
+        for i in self.gate_coords.index:
+            current_gate = self.gate_coords['gate'][i]
+            if current_gate == gate_name:
+                return str(self.gate_coords['x'][i]) + ',' + str(self.gate_coords['y'][i])
+
+        return 0
+
+    def contour_graph_helper(self):
+
+        counts = {}
+        x = []
+        y = []
+        group = []
+        contour_data = {}
+
+        # This loop gathers the total usage for each gate from the entire dataset and total days
+        for i in self.main_dataframe.index:
+            # (String) current gate name
+            current_gate = self.main_dataframe['gate_name'][i]
+            if self.main_dataframe['gate_name'][i] in counts:
+                counts[current_gate] = counts.get(current_gate) + 1
+            else:
+                counts[current_gate] = 1
+
+        for gate_name in counts:
+            coords = str(self.find_coords(gate_name)).split(',')
+            for repeat in range(counts[gate_name]):
+                x.append(int(coords[0]))
+                y.append(int(coords[1]))
+                group.append(gate_name)
+
+        contour_data['x'] = x
+        contour_data['y'] = y
+        contour_data['group'] = group
+
+        return contour_data
