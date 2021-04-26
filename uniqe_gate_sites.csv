@@ -1,7 +1,7 @@
 x,y,group,cars
 101,48,ranger-stop7,672
-105,168,general-gate,14801
-111,191,general-gate,216
+105,168,general-gate2,14801
+111,191,general-gate0,216
 116,33,entrance3,8531
 117,49,gate6,1185
 124,53,ranger-stop6,1878
@@ -21,7 +21,7 @@ x,y,group,cars
 182,55,camping7,2190
 184,113,entrance2,7133
 184,152,camping1,340
-187,145,general-gate,859
+187,145,general-gate3,859
 19,105,ranger-stop4,612
 20,176,ranger-stop1,466
 21,79,camping6,2465
