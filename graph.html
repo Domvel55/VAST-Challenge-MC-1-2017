@@ -115,8 +115,8 @@
 			    var mouseleave = function(d) {
 			      tooltip
 			        .style("opacity", 0)
-							.style("left", ("0px")
-							.style("top", ("0px")
+							.style("left", (d3.mouse(this)[0]-20) + "px")
+							.style("top", (d3.mouse(this)[1]) + "px")
 			      d3.select(this)
 			        .style("stroke", "none")
 			        .style("opacity", 0.8)
